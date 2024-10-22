@@ -8,7 +8,7 @@ class ContactsController < ApplicationController
 
   # GET /contacts/1
   def show
-    render json: @contact, include: [:type, :phones]
+    render json: @contact, include: [:type, :phones, :address]
   end
 
   # POST /contacts
@@ -16,7 +16,7 @@ class ContactsController < ApplicationController
     @contact = Contact.new(contact_params)
 
     if @contact.save
-      render json: @contact, include: [:type, :phones],  status: :created, location: @contact
+      render json: @contact, include: [:type, :phones, :address],  status: :created, location: @contact
     else
       render json: @contact.errors, status: :unprocessable_entity
     end
@@ -25,7 +25,7 @@ class ContactsController < ApplicationController
   # PATCH/PUT /contacts/1
   def update
     if @contact.update(contact_params)
-      render json: @contact, include: [:type, :phones]
+      render json: @contact, include: [:type, :phones, :address]
     else
       render json: @contact.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,8 @@ class ContactsController < ApplicationController
     def contact_params
       params.require(:contact)
       .permit(:name, :email, :birthday, :type_id, 
-      phones_attributes: [:id, :number, :_destroy])
+      phones_attributes: [:id, :number, :_destroy],
+      address_attributes: [:id, :street, :city]
+      )
     end
 end
