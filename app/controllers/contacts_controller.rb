@@ -3,12 +3,14 @@ class ContactsController < ApplicationController
 
   # GET /contacts
   def index
+    @contacts = Contact.all
+
     render json: @contacts
   end
 
   # GET /contacts/1
   def show
-    render json: @contact, include: [:type, :phones, :address]
+    render json: @contact, include: [:type, :address, :phones]
   end
 
   # POST /contacts
